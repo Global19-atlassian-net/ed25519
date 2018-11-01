@@ -20,21 +20,22 @@ all: $(OUT)/libed25519.sgx.static.a $(OUT)/libed25519.static.a
 run: all
 
 $(SGX_OBJ)/%.o: src/%.c
-	$(CC) $(SGX_C_Flags) -c $< -o $@
 	@echo "CC  <=  $<"
+	@mkdir -p $(SGX_OBJ)
+	$(CC) $(SGX_C_Flags) -c $< -o $@
 
 $(NONSGX_OBJ)/%.o: src/%.c
-	$(CC) $(C_Flags) -c $< -o $@
 	@echo "CC  <=  $<"
+	@mkdir -p $(NONSGX_OBJ)
+	$(CC) $(C_Flags) -c $< -o $@
 
 $(OUT)/libed25519.sgx.static.a: $(SGX_C_Objects)
-		ar rcs $@ $(SGX_C_Objects)
+	@mkdir -p $(OUT)
+	ar rcs $@ $(SGX_C_Objects)
 
 $(OUT)/libed25519.static.a: $(NONSGX_C_Objects)
-		ar rcs $@ $(NONSGX_C_Objects)
+	@mkdir -p $(OUT)
+	ar rcs $@ $(SGX_C_Objects)
 
 clean:
-	@rm -f $(OUT)/libed25519.sgx.static.a $(OUT)/libed25519.static.a $(SGX_C_Objects) $(NONSGX_C_Objects)
 	@rm -rf $(SGX_OBJ) $(NONSGX_OBJ) $(OUT)
-
-$(shell mkdir -p $(SGX_OBJ) $(NONSGX_OBJ) $(OUT))
