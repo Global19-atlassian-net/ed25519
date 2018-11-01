@@ -56,6 +56,7 @@ unsigned char shared_secret[32];
 API
 ---
 
+For SGX builds, use ```sgx_read_rand()``` instead of ```ed25519_create_seed()```
 ```c
 int ed25519_create_seed(unsigned char *seed);
 ```
